@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkFlow | Вход</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2334d399' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><rect width='18' height='18' x='3' y='3' rx='2'/><path d='m9 12 2 2 4-4'/></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/login.css?v=1">
+</head>
+<body>
+    <div class="login-container">
+        <section class="intro-section">
+            <div class="brand">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                <span>WorkFlow</span>
+            </div>
+
+            <div class="intro-content">
+                <h1>Организуйте свои задачи.<span class="accent-text"> Достигайте целей.</span></h1>
+                <p class="description">
+                    Простой и мощный инструмент для управления задачами, который поможет вам оставаться продуктивным каждый день.
+                </p>
+
+                <ul class="features-list">
+                    <li>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Категории и приоритеты
+                    </li>
+                    <li>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Отслеживание прогресса
+                    </li>
+                    <li>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Синхронизация на всех устройствах
+                    </li>
+                </ul>
+            </div>
+
+            <div class="intro-footer">
+                © 2026 WorkFlow. Все права защищены.
+            </div>
+        </section>
+
+        <section class="form-section">
+            <div class="login-box">
+                <header class="form-header">
+                    <h2>Добро пожаловать!</h2>
+                    <p>Войдите в свой аккаунт, чтобы продолжить</p>
+                </header>
+
+                <form class="login-form">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input name="user_email" type="email" placeholder="name@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-row">
+                            <label>Пароль</label>
+                        </div>
+                        <input name="user_password" type="password" placeholder="Введите пароль" required>
+                    </div>
+
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Запомнить меня</label>
+                    </div>
+
+                    <button type="submit" class="btn-login">
+                        Войти
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                    </button>
+                </form>
+
+                <div class="form-footer">
+                    Нет аккаунта? <a href="/workflow/register">Зарегистрироваться</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="confirm-box">
+        <header class="form-header">
+            <h2>Подтвердите Email</h2>
+            <p>Мы отправили 6-значный код на вашу почту</p>
+        </header>
+        
+        <form class="confirm-form" id="confirmForm">
+            <div class="form-group">
+                <div class="code-inputs">
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" id="emailCode" placeholder="000000" required>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-login" id="btnConfirm">
+                Подтвердить почту
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+            </button>
+            <button type="button" class="btn-cancel" id="closeModal">Отмена</button>
+        </form>
+    </div>
+</div>
+
+<script src="/static/js/login.js"></script>
+</body>
+</html>

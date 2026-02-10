@@ -1,0 +1,539 @@
+/* Основной контейнер стека настроек */
+.security-stack {
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Карточка (общий стиль для всех блоков) */
+.card {
+    background: #0f0f0f;
+    border: 1px solid #1f1f1f;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+/* --- СЕКЦИЯ: УРОВЕНЬ ЗАЩИТЫ --- */
+.protection-container {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 10px 0;
+}
+
+.progress-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    /* Динамический градиент на чистом CSS */
+    background: radial-gradient(closest-side, #0f0f0f 79%, transparent 80% 100%),
+                conic-gradient(#10b981 calc(var(--progress) * 1%), #262626 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.progress-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.protection-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.check-item {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #888;
+}
+
+.check-item.done { color: #fff; }
+
+.check-item::before {
+    content: "×";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #262626;
+    color: #666;
+    font-size: 12px;
+}
+
+.check-item.done::before {
+    content: "✓";
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+/* --- СЕКЦИЯ: ИЗМЕНЕНИЕ ПАРОЛЯ --- */
+.password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.last-change-text {
+    color: #666;
+    font-size: 0.85rem;
+    margin-top: -15px;
+    margin-bottom: 15px;
+}
+
+/* Поля ввода и сетка */
+.form-row-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #eee;
+}
+
+.form-input {
+    width: 100%;
+    background: #141414;
+    border: 1px solid #262626;
+    padding: 14px 16px; /* Увеличенные отступы для солидности */
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+}
+
+/* Обертка для поля с кнопкой-глазом */
+.password-field-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+.toggle-password:hover { color: #fff; }
+
+/* --- ИНДИКАТОР СЛОЖНОСТИ --- */
+.strength-section {
+    margin-top: 5px;
+}
+
+.strength-meter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.strength-segment {
+    height: 4px;
+    background: #262626; /* Цвет по умолчанию (серый) */
+    border-radius: 2px;
+    transition: background 0.3s ease;
+}
+
+/* Классы состояний */
+.segment-red { background: #ef4444 !important; }
+.segment-orange { background: #f59e0b !important; }
+.segment-yellow { background: #eab308 !important; }
+.segment-green { background: #10b981 !important; }
+
+.strength-text {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.status-label {
+    color: #10b981;
+    font-weight: 600;
+}
+
+/* --- КНОПКА СОХРАНЕНИЯ --- */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.btn-submit-green {
+    background: #10b981;
+    color: #000;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-submit-green:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+.btn-submit-green:active {
+    transform: translateY(0);
+}
+
+/* Адаптивность для мобилок */
+@media (max-width: 600px) {
+    .form-row-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .protection-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+}
+
+/* Добавь это в секцию карточки */
+.card-header-with-icon {
+    display: flex;          /* Включаем флексбокс */
+    align-items: center;    /* Центрируем иконку и текст по вертикали */
+    gap: 12px;              /* Расстояние между ключиком и надписью */
+    margin-bottom: 20px;    /* Отступ снизу от заголовка */
+}
+
+.card-header-with-icon svg {
+    flex-shrink: 0;         /* Чтобы иконка не сжималась */
+    display: block;
+}
+
+.card-header-with-icon .card-title {
+    margin-bottom: 0;       /* Убираем нижний отступ, так как он теперь регулируется родителем */
+}
+
+.toggle-password.active {
+    color: #10b981; /* Зеленый цвет, когда пароль открыт */
+}
+
+/* Выравнивание главного заголовка страницы */
+.header-title-row {
+    display: flex;          /* Выстраиваем в ряд */
+    align-items: center;    /* Центрируем по вертикали */
+    gap: 12px;              /* Отступ между щитом и текстом */
+    margin-bottom: 8px;     /* Отступ до подзаголовка снизу */
+}
+
+.header-icon {
+    flex-shrink: 0;         /* Чтобы иконка не сжималась */
+    display: flex;
+    align-items: center;
+}
+
+.header-title-row h1 {
+    margin: 0;              /* Убираем лишние отступы у h1 */
+    line-height: 1;         /* Чтобы текст не "прыгал" относительно иконки */
+}
+
+@property --progress {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+.progress-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    /* Добавляем плавность перехода */
+    transition: --progress 1s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    background: radial-gradient(closest-side, #0f0f0f 79%, transparent 80% 100%),
+                conic-gradient(#10b981 calc(var(--progress) * 1%), #262626 0);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* --- СЕКЦИЯ 2FA --- */
+.tfa-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.tfa-info .card-header-with-icon {
+    margin-bottom: 4px; /* Уменьшаем отступ для описания */
+}
+
+.tfa-description {
+    font-size: 0.9rem;
+    color: #888;
+    margin: 0;
+}
+
+.tfa-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.tfa-status-text {
+    font-size: 0.9rem;
+    color: #666;
+    transition: color 0.3s;
+}
+
+.tfa-status-text.active {
+    color: #10b981;
+}
+
+/* Стили самого переключателя (Toggle Switch) */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #262626;
+    transition: .4s;
+    border: 1px solid #333;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #888;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: rgba(16, 185, 129, 0.1);
+    border-color: #10b981;
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+    background-color: #10b981;
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* 1. Глобальный запрет на "летающий глаз" вне полей пароля */
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
+}
+
+/* Скрываем любые иконки переключения, которые случайно попали в блок защиты */
+.protection-container .toggle-password, 
+.protection-container .eye-icon {
+    display: none !important;
+}
+/* АДАПТИВ ДЛЯ БЕЗОПАСНОСТИ */
+@media (max-width: 768px) {
+    /* 1. Разрешаем скролл */
+    html, body {
+        overflow-y: auto !important;
+        height: auto !important;
+    }
+
+    .app-container {
+        display: block;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    /* 2. Сайдбар и Оверлей */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 280px;
+        height: 100vh;
+        z-index: 9999;
+        background-color: #0f0f0f;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-right: 1px solid #1f1f1f;
+    }
+
+    .sidebar-nav {
+        flex: none !important;
+        padding: 10px;
+        min-height: 76dvh !important;
+        max-height: 76dvh !important; 
+    }
+    
+    .sidebar.active { left: 0; }
+
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 9998;
+    }
+    .sidebar-overlay.show { display: block; }
+
+    /* 3. Контент */
+    .main-content {
+        padding: 80px 16px 40px 16px !important;
+        width: 100% !important;
+    }
+
+    .protection-container {
+        flex-direction: column;
+        align-items: center; 
+        gap: 24px;
+        position: relative; 
+        /* Блокируем отображение любого "глаза" внутри этого блока */
+        overflow: hidden; 
+    }
+
+    /* Скрываем кнопку глаза и любые иконки переключения именно в блоке защиты */
+    .protection-container .toggle-password,
+    .protection-container .eye-icon,
+    .protection-container button:has(svg),
+    .protection-container svg:not(.progress-circle svg) {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    .protection-checklist {
+        width: 100%; 
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; 
+    }
+
+    .check-item {
+        justify-content: flex-start;
+        text-align: left;
+        width: 100%;
+    }
+
+    .tfa-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .tfa-controls {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #1f1f1f;
+    }
+
+    /* 5. Мобильный хедер-бар */
+    .mobile-header-bar {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: #000;
+        border-bottom: 1px solid #1f1f1f;
+        padding: 0 16px;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .mobile-header-bar::after {
+        content: 'WorkFlow';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 19px;
+        letter-spacing: -0.8px;
+    }
+
+    .menu-toggle-btn {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        color: white;
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Ядерный фикс: глаз виден ТОЛЬКО в обертке пароля */
+.protection-container .js-toggle-visibility,
+.protection-container .toggle-password {
+    display: none !important;
+}

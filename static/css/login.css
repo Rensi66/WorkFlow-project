@@ -1,0 +1,370 @@
+:root {
+    --bg-dark: #000000;          /* Глубокий черный для правой части */
+    --bg-sidebar: #121212;      /* Сероватый оттенок для левой части */
+    --bg-input: #0a0a0a;
+    --accent-green: #34d399;
+    --accent-green-dark: #064e3b;
+    --text-white: #ffffff;
+    --text-gray: #94a3b8;
+    --text-muted: #64748b;
+    --border-color: rgba(255, 255, 255, 0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    /* height: 100vh;
+    display: flex;
+    overflow: hidden; */
+}
+
+.login-container {
+    width: 100%;
+    /* height: 100vh; */
+}
+
+/* --- ЛЕВАЯ ЧАСТЬ (СЕРОВАТАЯ) --- */
+.intro-section {
+    flex: 1; /* Чуть шире правой части */
+    padding: 60px 80px;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--bg-sidebar); /* Тот самый серый блок */
+    border-right: 1px solid var(--border-color); /* Тонкая линия разделения */
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--text-white);
+}
+
+.intro-content h1 {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    letter-spacing: -1px;
+}
+
+.accent-text {
+    color: var(--accent-green);
+}
+
+.description {
+    font-size: 16px;
+    color: var(--text-gray);
+    max-width: 440px;
+    line-height: 1.6;
+    margin-bottom: 48px;
+}
+
+.features-list {
+    list-style: none;
+}
+
+.features-list li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: var(--text-white);
+}
+
+.intro-footer {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+/* --- ПРАВАЯ ЧАСТЬ (ЧЕРНАЯ) --- */
+.form-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background-color: var(--bg-dark); /* Чистый черный */
+}
+
+.login-box {
+    width: 100%;
+    max-width: 380px;
+}
+
+.form-header {
+    margin-bottom: 32px;
+}
+
+.form-header h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.form-header p {
+    color: var(--text-muted);
+    font-size: 15px;
+}
+
+.form-group {
+    margin-bottom: 18px; /* Было 20px, в регистрации 18px */
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px; /* Было 14px, теперь 13px как в регистрации */
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-white);
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-group input {
+    width: 100%;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 13px 16px; /* Было 14px 16px, теперь консистентно */
+    color: #fff;
+    font-size: 14px;    /* Было 15px, теперь 14px */
+    outline: none;
+    transition: 0.2s;
+}
+
+.form-group input:focus {
+    border-color: var(--accent-green);
+    background-color: var(--bg-input); /* Убрали жесткий #000, оставили переменную */
+    box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.1); /* Легкое свечение для современности */
+}
+
+.forgot-link {
+    color: var(--accent-green);
+    font-size: 13px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    font-size: 14px;
+    color: var(--text-gray);
+    cursor: pointer;
+}
+
+.remember-me input {
+    accent-color: var(--accent-green);
+    width: 18px;
+    height: 18px;
+}
+
+.btn-login {
+    width: 100%;
+    background-color: var(--accent-green);
+    color: var(--accent-green-dark);
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 8px 24px rgba(52, 211, 153, 0.15);
+}
+
+.form-footer {
+    margin-top: 32px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-gray);
+}
+
+.form-footer a {
+    color: var(--accent-green);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* --- МОДАЛЬНОЕ ОКНО --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: none; /* Скрыто по умолчанию */
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.confirm-box {
+    background: #121212;
+    border: 1px solid var(--border-color);
+    padding: 40px;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.code-inputs input {
+    width: 100%;
+    background-color: var(--bg-input);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    color: var(--accent-green); /* Делаем цифры зелеными как в регистрации */
+    font-size: 28px;            /* Увеличиваем размер */
+    letter-spacing: 10px;       /* Тот самый разнос цифр */
+    text-align: center;
+    font-weight: 700;
+    outline: none;
+    margin-bottom: 20px;
+    transition: 0.2s;
+}
+
+.code-inputs input:focus {
+    border-color: var(--accent-green);
+    box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.1);
+}
+
+.btn-cancel {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    margin-top: 16px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.btn-cancel:hover {
+    color: var(--text-white);
+}
+
+@media screen and (min-width: 901px) {
+    .login-container {
+        display: flex; /* Flex включается ТОЛЬКО ТУТ */
+        height: 100vh;
+    }
+    .intro-section {
+        display: flex; /* Flex включается ТОЛЬКО ТУТ */
+        flex: 1;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 60px 80px;
+        height: 100vh;
+    }
+    .form-section {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    /* 1. Убиваем флекс на корню */
+    body, 
+    .login-container {
+        display: block !important; /* Больше никакого flex! */
+        height: auto !important;
+        overflow-y: auto !important;
+        background-color: #000 !important;
+    }
+
+    /* 2. Левая часть (Текст) */
+    .intro-section {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important; /* Убираем vh если был */
+        padding: 40px 20px 0 20px !important;
+        border: none !important;
+        background: transparent !important;
+    }
+
+    /* 3. Центрируем логотип */
+    .brand {
+        display: flex !important;
+        justify-content: center !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* 4. Заголовок */
+    .intro-content {
+        text-align: center !important;
+    }
+
+    .intro-content h1 {
+        font-size: 22px !important;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+    }
+
+    /* Скрываем мусор */
+    .description, 
+    .features-list, 
+    .intro-footer, 
+    .intro-content h1 br {
+        display: none !important;
+    }
+
+    /* 5. Правая часть (Форма) */
+    .form-section {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        padding: 20px !important; /* Форма встанет сразу под заголовком */
+        background: transparent !important;
+    }
+
+    .login-box {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+    }
+
+    .form-header {
+        text-align: center !important;
+        margin-bottom: 24px !important;
+    }
+
+    .form-group input {
+        padding: 13px 16px; 
+        font-size: 16px; /* Оставляем 16px для мобилок, чтобы iOS не зумил экран при фокусе */
+    }
+}

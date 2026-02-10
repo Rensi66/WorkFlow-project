@@ -1,0 +1,1511 @@
+.mobile-only {
+    display: none !important;
+}
+
+:root {
+    /* Фоновые цвета: чистый черный и шаг 8% */
+    --bg-dark: #000000;          
+    --bg-surface: hsl(0, 0%, 8%); 
+    --bg-surface-hover: hsl(0, 0%, 12%); 
+    --bg-secondary: hsl(0, 0%, 14%); /* Для боксов внутри карточек */
+    
+    /* Акценты */
+    --primary: #6366f1;
+    --text-white: #f8fafc;
+    --text-gray: #94a3b8;
+    --muted-foreground: #64748b;
+    --red-500: #ef4444;
+    
+    /* Границы */
+    --border-color: rgba(255, 255, 255, 0.08); 
+    
+    /* Типографика по твоим стандартам */
+    --text-sm: 0.875rem;
+    --text-sm--line-height: 1.25rem;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+}
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Inter', sans-serif; 
+    -webkit-font-smoothing: antialiased;
+}
+
+body { 
+    background-color: var(--bg-dark); 
+    color: var(--text-white); 
+    overflow: hidden; 
+}
+
+.app-container { 
+    display: flex; 
+    height: 100vh; 
+    width: 100vw; 
+}
+
+/* --- СТОЛБЕЦ 1: SIDEBAR --- */
+/* Sidebar (установлен на 1.3 из 7 частей ширины) */
+.sidebar {
+    /* Рассчитываем 1.3 части от общей сетки из 7 */
+    flex: 0 0 calc(100vw / 7 * 1.3); 
+    background-color: var(--bg-surface);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-color);
+    min-width: 220px; /* Минимальный порог, чтобы текст не поплыл */
+}
+
+
+.logo { 
+    padding: 30px 20px; 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    /* Цвет текста теперь белый */
+    color: var(--text-white); 
+    font-weight: var(--font-weight-bold);
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--border-color);   
+}
+
+/* Добавь это, чтобы иконка всегда была зеленой, а текст белым */
+.logo svg {
+    flex-shrink: 0;
+    stroke: #34d399; /* Тот самый зеленый из Login */
+}
+
+.sidebar-middle { flex: 1; padding: 10px;}
+
+/* Кнопка навигации (стиль 2026) */
+.nav-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 4px;
+    color: var(--text-gray); /* Твой приглушенный цвет */
+}
+
+/* Эффект наведения */
+.nav-btn:hover {
+    background-color: var(--bg-surface-hover); /* Твои 12% яркости */
+    color: var(--text-white);
+}
+
+/* Активное состояние */
+.nav-btn.active {
+    background-color: var(--bg-surface-hover);
+    color: var(--text-white);
+}
+
+/* Иконка внутри кнопки */
+.nav-icon {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor; /* Принимает цвет текста кнопки */
+}
+
+/* Текст внутри (растягивается, чтобы прижать бейдж к краю) */
+.nav-text {
+    flex: 1;
+    text-align: left;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Бейдж с числом задач (кругляшок справа) */
+.nav-badge {
+    font-size: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--muted-foreground);
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 500;
+}
+
+/* При наведении на кнопку бейдж можно сделать чуть светлее */
+.nav-btn:hover .nav-badge {
+    color: var(--text-white);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+.categories-section {
+    margin-top: 20px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+}
+
+.categories-header {
+    font-size: var(--text-sm);
+    color: var(--muted-foreground);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.category-item {
+    padding: 10px 15px 10px 45px;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--muted-foreground);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.category-item:hover {
+    color: #ffffff;
+    background: var(--bg-surface-hover);
+}
+
+.category-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Если название слишком длинное */
+}
+
+.add-category-item {
+    /* p-10 15px 10px 45px — 45px слева, чтобы выровнять иконку с кружками категорий */
+    padding: 6px 15px 6px 20px; 
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--text-sm);
+    color: var(--muted-foreground);
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 2px; /* Уменьшили отступ сверху, чтобы было компактнее */
+}
+
+.add-category-item:hover {
+    color: #ffffff;
+    background: var(--bg-surface-hover);
+    border-radius: 8px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-left: 20px; /* Немного корректируем падинг при ховере для красоты */
+}
+
+/* Контейнер нижней части сайдбара */
+.sidebar-bottom {
+    border-top: 1px solid var(--border-color); /* Линия сверху */
+    padding: 16px 12px 20px; /* p-4 из шаблона */
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* space-y-1 */
+
+}
+
+/* Ссылки (кнопки) */
+.bottom-nav-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px; /* gap-3 */
+    padding: 10px 12px; /* px-3 py-2.5 */
+    border-radius: 8px; /* rounded-lg */
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--muted-foreground);
+    
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ховер эффект: фон 12% и белый текст */
+.bottom-nav-link:hover {
+    background-color: var(--bg-surface-hover); /* Твои 12% яркости */
+    color: var(--text-white);
+}
+
+/* Иконки в нижнем меню */
+.bottom-nav-icon {
+    width: 20px; /* w-5 */
+    height: 20px;
+    stroke: currentColor; /* Цвет иконки следует за цветом текста */
+    flex-shrink: 0;
+}
+
+/* Чтобы иконка тоже светилась белым при наведении */
+.bottom-nav-link:hover .bottom-nav-icon {
+    color: var(--text-white);
+}
+
+/* --- СТОЛБЕЦ 2: CONTENT --- */
+/* Основной контент автоматически заберет остальные 5.7/7 */
+.main-content {
+    flex: 1; 
+    padding: 0 40px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    height: 100%;
+}
+
+.header { 
+    height: 100px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+}
+
+/* Обёртка поиска */
+.search-wrapper { 
+    position: relative; 
+    background: var(--bg-surface); /* Твои 8% яркости */
+    border: 1px solid var(--border-color); 
+    border-radius: 12px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 400px;
+    transition: all 0.3s ease;
+}
+
+/* Иконка поиска */
+.search-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--muted-foreground);
+    transition: color 0.3s ease;
+    flex-shrink: 0; /* Чтобы иконка не сжималась */
+}
+
+/* Поле ввода */
+.search-input { 
+    background: none; 
+    border: none; 
+    outline: none; /* Убираем стандартную синюю рамку браузера */
+    color: var(--text-white); 
+    width: 100%; 
+    font-size: var(--text-sm);
+}
+
+/* Эффект при наведении или клике (ФОКУСЕ) */
+.search-wrapper:hover,
+.search-wrapper:focus-within {
+    border-color: rgba(255, 255, 255, 0.4); /* Белая окантовка (40% прозрачности) */
+    background-color: var(--bg-surface-hover); /* 12% яркости */
+}
+
+/* Подсветка иконки при фокусе всей обертки */
+.search-wrapper:focus-within .search-icon,
+.search-wrapper:hover .search-icon {
+    color: #ffffff;
+}
+
+/* Цвет плейсхолдера */
+.search-input::placeholder {
+    color: var(--muted-foreground);
+}
+
+
+/* КАРТОЧКИ СТАТИСТИКИ (Новый формат) */
+.stats-grid { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px; 
+}
+
+.stat-card {
+    background: var(--bg-surface);
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 105px;
+    transition: 0.2s ease;
+}
+
+.stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.stat-label {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--muted-foreground);
+}
+
+.icon-box {
+    width: 32px;
+    height: 32px;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-box i { width: 16px; height: 16px; color: var(--primary); }
+
+.stat-bottom {
+    margin-top: auto; 
+    display: flex;
+    align-items: baseline;
+}
+
+.stat-value {
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: var(--font-weight-bold);
+    color: var(--text-white);
+}
+
+.stat-badge {
+    margin-left: 8px;
+    font-size: 0.75rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--red-500);
+}
+
+.stat-card:hover {
+    background-color: var(--bg-surface-hover);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* ЗАДАЧИ И ПУНКТИРНЫЙ ВВОД */
+.task-view { margin-top: 50px; margin-bottom: 40px;}
+
+.view-header {
+    display: flex;
+    flex-direction: column; 
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.task-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    
+    /* Перенос текста */
+    white-space: pre-wrap;     /* Сохраняет пробелы и переносит строки */
+    word-break: break-all;     /* Принудительно разрывает о-о-очень длинные слова (как на скрине) */
+    line-height: 1.4;
+
+    /* Резервируем место под иконки (примерно 65px хватит для звезды и корзины) */
+    padding-right: 65px; 
+    
+    flex: 1;
+    min-width: 0; /* Важный костыль для flex-боксов, чтобы текст не распирал родителя */
+}
+
+/* Контейнер вокруг инпута (стиль 2026) */
+.quick-add-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;                  /* Расстояние между иконкой и текстом */
+    width: 100%;
+    max-width: 500px;
+    background: var(--bg-surface); /* Твои 8% яркости */
+    padding: 12px 16px;
+    
+    /* Изначально рамка приглушенная и пунктирная */
+    border: 1.5px dashed rgba(255, 255, 255, 0.15); 
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавный переход */
+    cursor: text;               /* Чтобы при наведении на рамку был курсор ввода */
+}
+
+/* Эффект при наведении или клике внутрь (ФОКУСЕ) */
+.quick-add-wrapper:hover, 
+.quick-add-wrapper:focus-within {
+    /* Рамка становится ярче и белее */
+    border-color: rgba(255, 255, 255, 0.5); 
+    background: var(--bg-surface-hover); /* Твои 12% яркости */
+    border-style: dashed;       /* Оставляем пунктир при фокусе */
+}
+
+/* Стили для иконки плюса (SVG) */
+.quick-add-wrapper svg, 
+.quick-add-wrapper i {
+    width: 18px;
+    height: 18px;
+    color: var(--muted-foreground);
+    transition: color 0.3s ease;
+    flex-shrink: 0;             /* Иконка не сжимается */
+}
+
+/* Иконка становится ярко-белой вместе с рамкой */
+.quick-add-wrapper:hover svg,
+.quick-add-wrapper:focus-within svg,
+.quick-add-wrapper:hover i,
+.quick-add-wrapper:focus-within i {
+    color: #ffffff;
+}
+
+/* Поле ввода */
+.quick-add-input {
+    background: transparent;
+    border: none;
+    outline: none;              /* Убирает синий контур браузера */
+    color: #ffffff;
+    width: 100%;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Настройка плейсхолдера (текста-подсказки) */
+.quick-add-input::placeholder {
+    color: var(--muted-foreground);
+    transition: color 0.3s ease;
+}
+
+/* Плейсхолдер тоже чуть светлеет при фокусе */
+.quick-add-wrapper:focus-within .quick-add-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.empty-placeholder {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    padding: 80px; 
+    color: #262626;
+}
+
+/* Контейнер формы */
+.task-form-card {
+    display: none; /* Скрыта по умолчанию */
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 15px;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease; /* Плавность */
+    width: 900px;
+}
+
+.tasks-container {
+    perspective: 1000px;
+}
+
+/* Верхняя строка: Заголовок и X */
+.form-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.form-header-row h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-white);
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-gray);
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* Поля ввода */
+.task-form-card .form-input {
+    width: 100%;
+    background-color: var(--bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--text-white);
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+}
+
+.task-form-card .form-input:focus {
+    border-color: var(--primary);
+}
+
+/* Описание */
+textarea.form-input {
+    min-height: 80px;
+    resize: none;
+}
+
+/* Нижняя панель */
+.form-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    gap: 12px;
+}
+
+.form-selectors {
+    display: flex;
+    gap: 8px;
+}
+
+/* Кнопки выбора (Категория, Флаг, Дата) */
+.selector {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--bg-secondary);
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    color: var(--text-gray);
+}
+
+.selector select, .selector input {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Иконки внутри селекторов (Lucide) */
+.selector svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2;
+}
+
+/* Кнопки действий */
+.btn-confirm {
+    background-color: #10b981;
+    color: #052e16;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    background: transparent;
+    border: none;
+    color: var(--text-gray);
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.size-xs { width: 14px !important; height: 14px !important; }
+.size-sm { width: 18px !important; height: 18px !important; }
+
+/* Убираем стандартную окантовку и настраиваем кастомные селекторы */
+.custom-select {
+    position: relative;
+    user-select: none;
+}
+
+.select-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--bg-secondary);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid transparent; /* Убираем серую окантовку */
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-white);
+    transition: background 0.2s;
+}
+
+.select-trigger:hover {
+    background-color: var(--bg-surface-hover);
+}
+
+.select-dropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    min-width: 118px;
+    max-height: 120px;
+    overflow-y: auto;
+    background-color: #1a1a1a;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 5px;
+    display: none; /* Скрыто по умолчанию */
+    z-index: 100;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted-foreground) transparent;
+}
+
+/* Добавим поддержку Chrome/Safari, чтобы скролл везде был одинаковым */
+.select-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.select-dropdown::-webkit-scrollbar-thumb {
+    background-color: var(--muted-foreground);
+    border-radius: 10px;
+}
+
+.select-dropdown.show { display: block; }
+
+.select-option {
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.select-option:hover { background-color: var(--bg-surface-hover); }
+
+.select-option.active {
+    background-color: #10b981; /* Тот самый зеленый со скрина */
+    color: #052e16;
+}
+
+/* КРАСИВЫЙ СКРОЛЛ ДЛЯ ОПИСАНИЯ */
+textarea#taskDesc {
+    max-height: 150px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted-foreground) transparent;
+}
+
+/* Для Chrome/Safari/Edge */
+textarea#taskDesc::-webkit-scrollbar {
+    width: 6px;
+}
+
+textarea#taskDesc::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+textarea#taskDesc::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Плавный поворот иконки шеврона */
+.transition-icon {
+    transition: transform 0.3s ease;
+}
+
+.categories-section.collapsed .transition-icon {
+    transform: rotate(-90deg);
+}
+
+/* Контейнер списка с анимацией раскрытия */
+.categories-container {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 0.3s ease;
+}
+
+.categories-section.collapsed .categories-container {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    pointer-events: none; /* Чтобы нельзя было кликнуть на скрытые элементы */
+}
+
+/* Настройка скролла для списка категорий */
+.categories-list {
+    /* Убираем жесткое ограничение в 200px, если хочешь, чтобы он рос */
+    /* Либо ставим max-height побольше, например 40vh (40% высоты экрана) */
+    max-height: 45vh; 
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Твой кастомный скролл (как в описании задачи) */
+.scroll-custom::-webkit-scrollbar {
+    width: 4px;
+}
+.scroll-custom::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+/* Контейнер категории (обновляем твой существующий) */
+.category-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Текст влево, корзина вправо */
+    gap: 12px;
+    padding: 12px 16px; /* Увеличили высоту по твоему прошлому запросу */
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--muted-foreground);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    margin: 2px 8px;
+    position: relative; /* Для позиционирования кнопки, если нужно */
+}
+
+/* Группа для точки и текста (чтобы они не разлетались) */
+.category-link-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0; /* Чтобы длинный текст обрезался корректно */
+}
+
+/* Кнопка удаления категории */
+.delete-cat-btn {
+    opacity: 0; /* Изначально невидима */
+    background: none;
+    border: none;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.category-item:hover .delete-cat-btn {
+    opacity: 1;
+}
+
+/* Когда наводим на саму корзину — она краснеет */
+.delete-cat-btn:hover {
+    color: var(--red-500);
+    transform: scale(1.1); /* Легкий эффект увеличения */
+}
+
+.delete-cat-btn i, .delete-cat-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.category-item, .nav-btn, .bottom-nav-link {
+    outline: none !important; /* Убирает контур */
+    -webkit-tap-highlight-color: transparent; /* Убирает синий блик на мобилках */
+}
+
+.category-item.active {
+    background-color: var(--bg-surface-hover);
+    color: var(--text-white);
+    /* Если хочешь акцентную полоску, оставь это, 
+       но если не хочешь — удали строку ниже: */
+    box-shadow: none; 
+}
+
+/* Выравнивание для активного состояния, если нужно */
+.category-item.active .category-name {
+    font-weight: var(--font-weight-bold);
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* --- КОРРЕКТИРОВКА: ЗОЛОТАЯ СЕРЕДИНА --- */
+#categoryModal * {
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85); /* Чуть глубже фон */
+    backdrop-filter: blur(10px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000;
+}
+
+.delete-confirm-card {
+    background: #111111;
+    border: 1px solid #262626;
+    border-radius: 16px;
+    padding: 24px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.modal-icon-warning {
+    color: #ef4444;
+    margin-bottom: 16px;
+}
+
+.modal-icon-warning svg { width: 40px; height: 40px; }
+
+.btn-danger {
+    flex: 1;
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-danger:hover { background: #dc2626; }
+
+.category-modal-card {
+    background: #121214;
+    width: 460px;
+    height: 620px; /* Фиксированная высота по твоему запросу */
+    border-radius: 20px;
+    border: 1px solid #27272a;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    /* Убрали общий gap, чтобы точнее настроить отступы вручную */
+}
+
+.modal-divider {
+    height: 1px;
+    background: #27272a;
+    width: calc(100% + 60px); /* Растягиваем на всю ширину с учетом padding */
+    margin: 0 -30px 0px -30px;
+}
+
+/* Хедер */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.modal-title-combined {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.modal-text h3 {
+    margin: 0;
+    font-size: 1.25rem; /* Умеренно крупно */
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.modal-text p {
+    margin: 4px 0 0;
+    font-size: 0.9rem;
+    color: #a1a1aa;
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    color: #71717a;
+    font-size: 26px;
+    cursor: pointer;
+    padding: 0;
+    margin-top: -4px;
+    transition: color 0.2s;
+}
+
+.modal-close-btn:hover { color: #fff; }
+
+/* Поля ввода */
+.input-group label {
+    display: block;
+    color: #e4e4e7;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+#newCategoryName {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 10px;
+    padding: 10px 14px; /* Уменьшили вертикальный отступ */
+    color: #fff;
+    width: 100%;
+    font-size: 0.95rem;
+    outline: none;
+    margin-top: 8px;
+}
+
+/* Сетка цветов */
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.color-option {
+    background: #18181b;
+    border: 1.5px solid #27272a;
+    border-radius: 12px;
+    padding: 16px 8px; /* Вернули объем */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.color-option::before {
+    content: '';
+    width: 18px; height: 18px; /* Крупные точки из прошлого варианта */
+    border-radius: 50%;
+    background-color: var(--bg);
+}
+
+.color-option span {
+    font-size: 0.85rem;
+    color: #71717a;
+    margin-top: 10px;
+}
+
+.color-option:hover { border-color: #3f3f46; }
+
+.color-option.active {
+    border-color: #22c55e;
+    background: rgba(34, 197, 94, 0.08);
+}
+.color-option.active span { color: #fff; }
+
+/* Предпросмотр */
+.category-preview {
+    margin-top: 10px;
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #fff;
+}
+
+.preview-section {
+    margin-top: 20px;
+}
+
+.preview-dot {  
+    width: 10px; height: 10px;
+    border-radius: 50%;
+}
+
+/* Кнопки */
+.modal-footer {
+    display: flex;
+    gap: 14px;
+    margin-top: auto; /* Прижимаем кнопки к самому низу 620-пиксельного блока */
+}
+
+.btn-primary {
+    flex: 1.5; /* Кнопка создания чуть шире */
+    background: #22c55e; color: #000; border: none;
+    padding: 14px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 1rem;
+}
+
+.btn-secondary {
+    flex: 1; background: transparent; color: #fff; border: 1px solid #27272a;
+    padding: 14px; border-radius: 12px; cursor: pointer; font-size: 1rem}
+
+.task-card {
+    background: #0f0f0f;
+    border: 1px solid #262626;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    /* Добавляем opacity и margin-bottom в transition */
+    transition: transform 0.3s ease, opacity 0.3s ease, margin-bottom 0.3s ease; 
+    width: 900px;
+    position: relative;
+    /* Важно для схлопывания при удалении */
+    overflow: hidden; 
+}
+
+/* Контейнер действий — теперь без фона и границ */
+.task-actions {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    display: flex;
+    gap: 2px; /* Плотное расположение */
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 5;
+}
+
+.task-card:hover .task-actions {
+    opacity: 1;
+}
+
+/* Кнопки: меньше размер, без фона */
+.action-btn {
+    background: none;
+    border: none;
+    color: #525252; /* Неяркий серый в покое */
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+/* Уменьшаем сами иконки */
+.action-btn svg, 
+.action-btn i {
+    width: 19px !important;
+    height: 19px !important;
+    stroke-width: 2px;
+}
+
+.star-btn.active {
+    color: #facc15; /* Насыщенный желтый/золотой цвет */
+}
+
+/* Если ты используешь заливку (fill), это закрасит внутреннюю часть звезды */
+.star-btn.active svg {
+    fill: #facc15; 
+    stroke: #facc15; /* Чтобы контур не был черным вокруг желтого */
+}
+
+/* Эффект при наведении на любую звезду для интерактивности */
+.star-btn:hover {
+    color: #facc15;
+    transform: scale(1.1);
+}
+
+/* Мусорка: краснеет при наведении */
+.delete-btn:hover {
+    color: #ef4444 !important;
+}
+
+.repeat {
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+/* Состояние выполненной карточки (true) */
+.task-card.completed {
+    background-color: rgba(0, 0, 0, 0.03); /* Немного темнее/серее фон */
+    opacity: 0.6; /* Вся карточка становится бледнее */
+}
+
+/* Эффект зачеркивания текста */
+.task-card.completed .task-title,
+.task-card.completed .task-description {
+    text-decoration: line-through; /* То самое зачеркивание */
+    text-decoration-thickness: 2px;
+    color: #6b7280; /* Серый цвет текста */
+}
+
+/* Стиль кнопки при выполнении */
+.task-card.completed .task-check {
+    color: #22c55e; /* Галочка становится зеленой */
+}
+
+.task-main {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.task-check {
+    background: none;
+    border: none;
+    color: #525252;
+    cursor: pointer;
+    padding-top: 4px;
+}
+
+.task-check:hover { color: #fff; }
+
+.task-header {
+    display: flex;
+    align-items: flex-start; /* Выравнивает точку и текст по верхней линии */
+    gap: 10px;
+    width: 100%;
+    position: relative;
+    padding-top: 2px; /* Небольшой отступ, чтобы точка была ровно по центру первой строки текста */
+}
+
+.category-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;    /* Чтобы точка не сплющивалась при длинном тексте */
+    margin-top: 6px;   /* Центрируем точку относительно первой строки заголовка */
+}
+
+.task-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+}
+
+.task-description {
+    color: #747478; /* Твой цвет здесь (этот светло-серый хорошо подходит под темную тему) */
+
+    overflow-wrap: anywhere; 
+    word-break: break-word;
+    white-space: pre-wrap; 
+    height: auto;
+    min-height: min-content;
+}
+
+.task-footer {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: #737373;
+    padding-top: 5px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Цвета приоритетов */
+.priority-0 { color: #22c55e; } /* Низкий - зеленый */
+.priority-1 { color: #eab308; } /* Средний - желтый */
+.priority-2 { color: #ef4444; } /* Высокий - красный */
+
+.size-xs { width: 14px; height: 14px; }
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: #888; /* Цвет текста как на скрине */
+}
+
+.empty-icon {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.05); /* Легкий фон круга */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.empty-icon i {
+    width: 32px;
+    height: 32px;
+    color: #555; /* Цвет иконки */
+}
+
+.empty-state h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+.empty-state p {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* --- MOBILE ADAPTATION (Media Queries) --- */
+
+@media (max-width: 1024px) {
+    /* На планшетах сужаем карточки до 100% */
+    .task-card, .task-form-card {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .search-wrapper {
+        width: 100%;
+    }
+}
+
+/* --- АДАПТИВ ПОД МОБИЛКИ --- */
+@media (max-width: 768px) {
+    /* --- ОСНОВНЫЕ ПРАВКИ --- */
+    body {
+        overflow-y: auto !important; /* Разрешаем скролл body на мобилках */
+        position: relative;
+    }
+
+    .app-container {
+        display: block !important; /* Убиваем flex, который может вешать отрисовку */
+        height: auto !important;
+        min-height: 100dvh;
+    }
+
+    .main-content {
+        padding: 0 16px;
+        width: 100% !important;
+        overflow: visible !important; /* Позволяем body отвечать за скролл */
+        height: auto !important;
+    }
+
+    .mobile-only {
+        display: block !important;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 280px;
+        height: 100vh;
+        z-index: 9999;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        min-width: unset;
+        flex: none;
+        display: flex !important; /* Убедись, что это flex */
+        flex-direction: column;
+        overflow-y: auto !important; /* РАЗРЕШАЕМ СКРОЛЛ ВНУТРИ */
+        -webkit-overflow-scrolling: touch; /* Плавность для мобилок */
+    }
+
+    .sidebar-middle {
+        flex: none !important; /* Отключаем гибкость, раз ставим жесткий лимит */
+        /* Устанавливаем высоту так, чтобы снизу гарантированно влез ЛК */
+        /* 65vh — это примерно 65% высоты экрана. Оставшиеся 35% уйдут на Лого и ЛК */
+        min-height: 82dvh !important;
+        max-height: 82dvh !important; 
+        
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important; 
+        border-bottom: 1px solid var(--border-color); /* Визуально отделим от ЛК */
+    }
+
+    .sidebar-bottom {
+        /* Гарантируем, что этот блок всегда на виду */
+        height: auto !important;
+        padding-bottom: 30px !important; /* Запас под системные кнопки Android/iOS */
+        background-color: var(--bg-surface);
+    }
+
+    .sidebar.active { left: 0; }
+
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(4px);
+        z-index: 9998;
+    }
+    .sidebar-overlay.show { display: block; }
+
+    .main-content {
+        padding: 0 16px;
+        width: 100vw;
+    }
+    
+    /* --- ХЕДЕР МОБИЛЬНЫЙ --- */
+    .header {
+        display: grid !important;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        height: auto;
+        padding: 10px 0;
+        gap: 0;
+    }
+
+    .mobile-app-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: white;
+        text-align: center;
+        letter-spacing: -0.5px;
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        color: white;
+        width: 42px;
+        height: 40px;
+        border-radius: 8px;
+        cursor: pointer;
+        justify-self: start;
+    }
+
+    .search-wrapper {
+        grid-column: 1 / -1;
+        width: 100% !important;
+        margin-top: 12px;
+        order: 3;
+    }
+
+    /* --- СТАТИСТИКА --- */
+    .stats-grid {
+        display: flex !important;
+        overflow-x: auto;
+        gap: 12px;
+        padding: 10px 16px 20px 16px;
+        margin: 0 -16px; 
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+    .stats-grid::-webkit-scrollbar { display: none; }
+    
+    .stat-card {
+        flex: 0 0 auto;
+        width: 130px !important; 
+        min-height: 80px !important; 
+        padding: 12px !important;
+        background: var(--bg-surface);
+        border-radius: 16px !important;
+    }
+    .icon-box { display: none !important; }
+
+    /* --- ФОРМА ДОБАВЛЕНИЯ ЗАДАЧИ --- */
+    .task-form-card {
+        width: 100% !important;
+        padding: 16px;
+        gap: 10px;
+        box-sizing: border-box;
+    }
+
+    .btn-cancel {
+        display: none !important;
+    }
+
+    .form-controls {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        width: 100%;
+        /* Убираем overflow: visible здесь, чтобы не ломать границы карточки */
+    }
+
+    .form-selectors {
+        display: flex;
+        gap: 6px;
+        flex: 1;
+        min-width: 0;
+        overflow-x: auto !important;
+        padding-bottom: 4px; /* Зазор для фокуса */
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+    .form-selectors::-webkit-scrollbar { display: none; }
+
+    .select-trigger, .selector {
+        padding: 6px 10px !important;
+        font-size: 12px !important;
+        gap: 4px !important;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    .categories-list {
+        max-height: 40vh; /* Ограничиваем список категорий на мобилке, чтобы ЛК всегда вылезал снизу */
+    }
+    
+    @media (max-width: 400px) {
+        .select-trigger span, .selector span {
+            display: none;
+        }
+    }
+
+    .btn-confirm {
+        width: auto !important;
+        padding: 8px 16px !important;
+        font-size: 14px !important;
+        flex-shrink: 0;
+        margin-left: 8px;
+    }
+
+    /* --- МАГИЯ ДЛЯ ВЫПАДАЮЩИХ СПИСКОВ --- */
+    .custom-select {
+        position: static; /* Это позволит выпадашке позиционироваться относительно form-controls или выше */
+    }
+
+    .select-dropdown {
+        position: fixed !important; /* Вырываем из контекста скролла */
+        /* Эти координаты заставят список появиться в районе формы, 
+           но без привязки к скроллящемуся контейнеру */
+        bottom: auto !important;
+        top: auto !important;
+        left: 16px !important;
+        right: 16px !important;
+        width: auto !important;
+        margin-top: 8px;
+        z-index: 999999 !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    /* --- КАРТОЧКИ ЗАДАЧ --- */
+    .task-card {
+        width: 100% !important;
+        padding: 14px;
+    }
+
+    .task-title {
+        font-size: 15px;
+        padding-right: 60px;
+        word-break: break-all !important;
+        white-space: normal !important;
+    }
+
+    .task-actions {
+        opacity: 1;
+        top: 10px;
+        right: 8px;
+    }
+
+    .action-btn svg {
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    .task-view { 
+        margin-top: 20px; 
+    }
+}
+
+/* На десктопе скрываем кнопку меню */
+@media (min-width: 769px) {
+    .mobile-menu-btn { display: none; }
+}

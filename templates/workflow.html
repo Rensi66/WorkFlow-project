@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkFlow</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2334d399' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><rect width='18' height='18' x='3' y='3' rx='2'/><path d='m9 12 2 2 4-4'/></svg>">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/static/css/workflow.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- ЛЕВАЯ КОЛОНКА (1/7) -->
+        <aside class="sidebar">
+            <!-- БЛОК 1: Логотип -->
+            <div class="sidebar-top">
+                <div class="logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="3" rx="2"/>
+                        <path d="m9 12 2 2 4-4"/>
+                    </svg>
+                    <span class="logo-text">WorkFlow</span>
+                </div>
+            </div>
+            
+            <!-- ПОЛОСКА И НАЧАЛО 2 БЛОКА -->
+            <!-- Добавляем класс border-top, который мы прописали в CSS -->
+            <div class="sidebar-middle border-top">
+                <nav class="nav-menu">
+                    <button class="nav-btn active" onclick="filterByCategory('all', event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon">
+                            <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
+                            <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                        </svg>
+                        <span class="nav-text">Все задачи</span>
+                        <span class="nav-badge" id="badge-total">0</span>
+                    </button>
+
+                    <button class="nav-btn" onclick="filterBySystem('today', event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon">
+                            <path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path>
+                        </svg>
+                        <span class="nav-text">Сегодня</span>
+                        <span class="nav-badge" id="badge-today">0</span>
+                    </button>
+
+                    <button class="nav-btn" onclick="filterBySystem('important', event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <span class="nav-text">Важно</span>
+                        <span class="nav-badge" id="badge-important">0</span>
+                    </button>
+
+                    <button class="nav-btn" onclick="filterBySystem('completed', event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon">
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                            <path d="m9 11 3 3L22 4"></path>
+                        </svg>
+                        <span class="nav-text">Выполнено</span>
+                        <span class="nav-badge" id="badge-completed">0</span>
+                    </button>
+                </nav>
+
+                <div class="categories-section">
+                    <div class="categories-header" id="toggleCategories">
+                        <span>КАТЕГОРИИ</span>
+                        <i data-lucide="chevron-down" class="size-sm transition-icon"></i>
+                    </div>
+                    
+                    <div class="categories-container" id="categoriesContainer">
+                        <div class="categories-list scroll-custom">
+                            {% for category in categories %}
+                            <div class="category-item" onclick="filterByCategory({{ category.category_id }}, event)" data-category-id="{{ category.category_id }}">
+                                <div class="category-link-group">
+                                    <span class="dot" style="background-color: {{ category.category_color }}"></span>
+                                    <span class="category-name">{{ category.category_name }}</span>
+                                </div>
+                                
+                                <button class="delete-cat-btn" onclick="deleteCategory({{ category.category_id }}, event)">
+                                    <i data-lucide="trash-2"></i>
+                                </button>
+                            </div>
+                            {% endfor %}
+                        </div>                
+                    </div>
+                        <div class="add-category-item" id="openAddCategory">
+                            <i data-lucide="plus" class="size-xs"></i> 
+                            <span>Добавить</span>
+                        </div>
+                </div>
+            </div>
+
+            <div class="sidebar-bottom">
+                <!-- Личный кабинет -->
+                <a href="/workflow/profile" class="bottom-nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bottom-nav-icon">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span>Личный кабинет</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ПРАВАЯ КОЛОНКА (6/7) -->
+        <main class="main-content">
+            <header class="header">
+                <button class="mobile-menu-btn" id="openMenu">
+                    <i data-lucide="menu"></i>
+                </button>
+
+                <div class="mobile-app-title mobile-only">WorkFlow</div>
+
+                <div class="header-spacer mobile-only"></div>
+
+                <div class="search-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                    <input type="text" class="search-input" placeholder="Поиск по задачам...">
+                </div>
+            </header>
+
+            <section class="stats-grid">
+                <!-- ВСЕГО ЗАДАЧ -->
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Всего задач</span>
+                        <div class="icon-box">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m9 11 3 3L22 4"></path>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-bottom">
+                        <span class="stat-value" id="stats-total">5</span>
+                    </div>
+                </div>
+
+                <!-- В ПРОЦЕССЕ -->
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">В процессе</span>
+                        <div class="icon-box">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-bottom">
+                        <span class="stat-value" id="stats-process">5</span>
+                    </div>
+                </div>
+
+                <!-- ВАЖНЫЕ -->
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Важные</span>
+                        <div class="icon-box">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-bottom">
+                        <span class="stat-value" id="stats-important">3</span>
+                    </div>
+                </div>
+
+                <!-- ВЫПОЛНЕНО -->
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Выполнено</span>
+                        <div class="icon-box">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                <polyline points="16 7 22 7 22 13"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-bottom">
+                        <span class="stat-value" id="stats-completed">4</span>
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="task-view">
+                <div class="view-header">
+                    <h2 id="viewTitle">Все задачи</h2>
+                    <div class="quick-add-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="quick-add-icon">
+                            <path d="M5 12h14"></path>
+                            <path d="M12 5v14"></path>
+                        </svg>
+                        <input type="text" class="quick-add-input" id="quickAddInput" placeholder="Добавить задачу...">
+                    </div>
+                </div>
+
+                <div class="tasks-container">
+                    <div id="addTaskForm" class="task-form-card" style="display: none; margin-bottom: 1.5rem;">
+                        <div class="form-header-row">
+                            <h3>Новая задача</h3>
+                            <button type="button" id="closeForm" class="close-btn">&times;</button>
+                        </div>
+                        
+                        <input type="text" id="taskTitle" class="form-input" placeholder="Название задачи">
+                        <textarea id="taskDesc" class="form-input" placeholder="Описание (необязательно)"></textarea>
+                        
+                        <div class="form-controls">
+                            <div class="form-selectors">
+                                <div class="custom-select" id="selectCategory">
+                                    <div class="select-trigger">
+                                        <i data-lucide="hash" class="size-xs"></i>
+                                        <span class="current-value">
+                                            {% if categories %}{{ categories[0].category_name }}{% else %}Нет категорий{% endif %}
+                                        </span>
+                                        <i data-lucide="chevron-down" class="size-xs arrow"></i>
+                                    </div>
+
+                                    <div class="select-dropdown">
+                                        {% for category in categories %}
+                                            <div class="select-option {% if loop.first %}active{% endif %}" data-value="{{ category.category_id }}">
+                                                {{ category.category_name }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="select-dropdown" id="dropdownCategoryList">
+                                        {% for category in categories %}
+                                            <div class="select-option {% if loop.first %}active{% endif %}" data-value="{{ category.category_id }}">
+                                                {{ category.category_name }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="custom-select" id="selectPriority">
+                                    <div class="select-trigger" data-value="0">
+                                        <i data-lucide="flag" class="size-xs"></i>
+                                        <span class="current-value">Низкий</span>
+                                        <i data-lucide="chevron-down" class="size-xs arrow"></i>
+                                    </div>
+                                    <div class="select-dropdown">
+                                        <div class="select-option active" data-value="0">Низкий</div>
+                                        <div class="select-option" data-value="1">Средний</div>
+                                        <div class="select-option" data-value="2">Высокий</div>
+                                    </div>
+                                </div>
+
+                                <div class="selector date-selector">
+                                    <i data-lucide="calendar" class="size-xs"></i>
+                                    <input type="date" id="taskDate">
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn-confirm" id="confirmAdd">Добавить</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tasksList">
+                        {% for task in tasks %}
+                        <div class="task-card {{ 'completed' if task.task_is_completed == 'true' }}" data-id="{{ task.task_id }}">
+                            
+                            <div class="task-actions">
+                                <button class="action-btn star-btn {{ 'active' if task.task_is_special == 'true' or task.task_is_special == True }}" 
+                                        title="В избранное" 
+                                        onclick="toggleSpecial({{ task.task_id }})">
+                                    <i data-lucide="star" {{ 'fill=currentColor' if task.task_is_special == 'true' or task.task_is_special == True }}></i>
+                                </button>
+                                <button class="action-btn delete-btn" title="Удалить задачу" onclick="deleteTask({{ task.task_id }})">
+                                    <i data-lucide="trash-2"></i>
+                                </button>
+                            </div>
+
+                            <div class="task-main">
+                                <button class="task-check" onclick="completeTask({{ task.task_id }})">
+                                    <i data-lucide="{{ 'check-circle' if task.task_is_completed == 'true' else 'circle' }}"></i>
+                                </button>
+                                <div class="task-body">
+                                    <div class="task-header">
+                                        <span class="category-dot" style="background-color: {{ task.category.category_color if task.category else '#555' }}"></span>
+                                        <h3 class="task-title">{{ task.task_name }}</h3>
+                                    </div>
+                                    {% if task.task_text %}<p class="task-description">{{ task.task_text }}</p>{% endif %}
+                                    <div class="task-footer">
+                                        {% if task.task_date %}
+                                        <div class="meta-item">
+                                            <i data-lucide="calendar" class="size-xs"></i>
+                                            <span>{{ task.task_date.strftime('%Y-%m-%d') }}</span>
+                                        </div>
+                                        {% endif %}
+                                        <div class="meta-item priority-{{ task.task_important }}">
+                                            <i data-lucide="flag" class="size-xs"></i>
+                                            <span>
+                                                {% if task.task_important == 0 %}Низкий{% elif task.task_important == 1 %}Средний{% else %}Высокий{% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+<div id="categoryModal" class="modal-overlay">
+    <div class="category-modal-card">
+        <div class="modal-header">
+            <div class="modal-title-combined">
+                <div class="icon-circle">
+                    <i data-lucide="hash"></i>
+                </div>
+                <div class="modal-text">
+                    <h3>Новая категория</h3>
+                    <p>Создайте категорию для группировки задач</p>
+                </div>
+            </div>
+            <button id="closeCategoryModal" class="modal-close-btn">&times;</button>
+        </div>
+
+        <div class="modal-divider"></div>
+
+        <div class="modal-body">
+            <div class="input-group">
+                <label>Название категории</label>
+                <input name="category_name" type="text" id="newCategoryName" placeholder="Например: Работа, Личное, Учеба...">
+            </div>
+
+            <div class="input-group">
+                <label>Цвет категории</label>
+                <div  class="color-grid">
+                    <div class="color-option active" data-color="#ef4444" style="--bg: #ef4444"><span>Красный</span></div>
+                    <div class="color-option" data-color="#f97316" style="--bg: #f97316"><span>Оранжевый</span></div>
+                    <div class="color-option" data-color="#eab308" style="--bg: #eab308"><span>Жёлтый</span></div>
+                    <div class="color-option" data-color="#22c55e" style="--bg: #22c55e"><span>Зелёный</span></div>
+                    <div class="color-option" data-color="#3b82f6" style="--bg: #3b82f6"><span>Синий</span></div>
+                    <div class="color-option" data-color="#a855f7" style="--bg: #a855f7"><span>Фиолетовый</span></div>
+                    <div class="color-option" data-color="#ec4899" style="--bg: #ec4899"><span>Розовый</span></div>
+                    <div class="color-option" data-color="#64748b" style="--bg: #64748b"><span>Серый</span></div>
+                </div>
+            </div>
+
+            <div class="preview-section">
+                <label>Предпросмотр</label>
+                <div class="category-preview">
+                    <i data-lucide="hash"></i>
+                    <span class="preview-dot" id="previewDot"></span>
+                    <span id="previewText">Название категории</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-secondary" id="cancelCategory">Отмена</button>
+            <button class="btn-primary" id="saveCategory">Создать категорию</button>
+        </div>
+    </div>
+</div>
+
+<div id="deleteModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content delete-confirm-card">
+        <div class="modal-icon-warning">
+            <i data-lucide="alert-triangle"></i>
+        </div>
+        <h3>Удалить задачу?</h3>
+        <p class="repeat">Это действие нельзя будет отменить.</p>
+        <div class="modal-footer">
+            <button class="btn-secondary" id="cancelDelete">Отмена</button>
+            <button class="btn-danger" id="confirmDelete">Удалить</button>
+        </div>
+    </div>
+</div>
+
+<script src="/static/js/workflow.js"></script>
+</body>
+</html>
