@@ -22,8 +22,7 @@ Workflow — это лаконичный и эффективный сервис 
 1. Клонирование
 Bash
 
-git clone https://github.com/твой-логин/workflow-tasks.git
-cd workflow-tasks
+git clone https://github.com/Rensi66/WorkFlow-project.git
 
 2. Настройка доступа
 
